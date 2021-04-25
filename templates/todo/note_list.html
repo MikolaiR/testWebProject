@@ -1,0 +1,28 @@
+{% extends "../base.html" %}
+{% block content %}
+<a href="{% url 'todo:create' %}">Создать</a>
+<ul>{% for note in notes %}
+    <li>
+        <div>
+            Событие: {{note.text}}
+        </div>
+        <div>
+            Дата создания: {{note.create_date}}
+        </div>
+        <div>
+            Дата события: {{note.target_date}}
+        </div>
+        <button onclick="deleteNote({{note.id}})">Удалить</button>
+        <hr>
+    </li>
+    {% endfor %}
+</ul>
+<script>
+async  function deleteNote(noteId){
+const response = await fetch(`${window.location.origin}/todo/delete/${noteId}`, {method: 'GET', mode: 'cors', headers: {
+     "X-CSRFToken": document.cookie.split('=')[1]
+    }})
+}
+console.log(document.cookie.split('=')[1])
+</script>
+{% endblock content %}
